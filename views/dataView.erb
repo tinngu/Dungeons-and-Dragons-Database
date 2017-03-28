@@ -1,0 +1,12 @@
+<ul>
+  <table align="center">
+    <tr>
+      <th text-align="center"> Name </th>
+    </tr>
+    <% @dataArray.each do |name| %>
+        <tr>
+          <td align="center"><%="#{name}"%></td>
+        </tr>
+    <% end %>
+  </table>
+</ul>

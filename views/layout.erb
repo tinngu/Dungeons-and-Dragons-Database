@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Bootstrap Website Voting!</title>
+  <meta charset="UTF8">
+  <link rel="stylesheet" href="styles.css">
+  <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <script src="/bootstrap/js/bootstrap.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="//jquerycsvtotable.googlecode.com/files/jquery.csvToTable.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="//jquerycsvtotable.googlecode.com/files/jquery.csvToTable.js"></script>
+  <style>
+    table {
+      border-collapse: collapse;
+      border: 2px black solid;
+      font: 12px sans-serif;
+    }
+
+    td {
+      border: 1px black solid;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Dungeons and Dragons Campaign Database</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="/player">Player</a></li>
+        <li><a href="/admin">Admin</a></li>
+        <li><a href="/ddbase">Database</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <% if session[:role].nil? %>
+          <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+        <% else %>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span>Logout</a></li>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
+  <section>
+    <%= yield %>
+
+  </section>
+</body>
+</html>

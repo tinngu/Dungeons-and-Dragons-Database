@@ -1,0 +1,16 @@
+<h1>Player Page</h1>
+
+<br>
+<p style="font-size:20px">Welcome <%="#{@currentUser}"%></p>
+<p>These are all the NPCs known to you</p>
+
+<table align="center">
+  <tr>
+    <th text-align="center"> Name </th>
+  </tr>
+  <% @result.each do |x| %>
+      <tr>
+        <td align="center"><%="#{x}"%></td>
+      </tr>
+  <% end %>
+</table>
