@@ -40,26 +40,22 @@ get '/player' do
   cid = session[:cid]
   db = SQLite3::Database.new("development.db")
   # only show npcs known to player
-  if session[:cid] >0
+  if session[:cid] > 0
     @results = db.execute("select n.name,c.town from campaigns c, npcs n
     where c.npc_id = n.npc_id and c.is_known = 't' and c.cid = (?)", cid)
   else # show all npcs in any campaign to admin
     @results = db.execute("select n.name,c.town from campaigns c, npcs n
     where c.npc_id = n.npc_id")
-
-    end
+  end
+  db.close
   erb :player
 end
 
 get '/dataView' do
   halt(401, 'Not Authorized') unless session[:role] == 'Admin'
-  @votingData = DungDrags.all #Stores all data into variable
-  @csv = CSV.generate do |csv| #Generates CSV format
-    @votingData.each {|x|
-      csv << ["#{x.username.to_s}"]
-    }
-  end
-  @dataArray = CSV.parse(@csv) #Convert CSV to an array
+  db = SQLite3::Database.new("development.db")
+  @dataArray = db.execute("select username from dung_drags")
+  db.close
   erb :dataView
 end
 

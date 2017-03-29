@@ -1,10 +1,10 @@
-<h1>Player Page</h1>
+<h1 style="padding-left: 80px">Player Page</h1>
 
 <br>
-<p style="font-size:20px">Welcome <%="#{@currentUser}"%></p>
-<p>These are all the NPCs known to you</p>
+<p style="font-size:20px; padding-left: 80px;">Welcome <%="#{@currentUser}"%></p>
+<p style="padding-left: 80px">These are all the NPCs known to you</p>
 
-<table>
+<table style="margin-left: 80px">
   <tr>
     <th style="text-align: center"> Name </th>
     <th style="text-align: center">Town</th>
@@ -12,8 +12,8 @@
 
   <% @results.each do |x| %>
     <tr>
-      <td align="center"><%="#{x[0]}"%></td>
-      <td align="center"><%="#{x[1]}"%></td>
+      <td align="center" ><%="#{x[0]}"%></td>
+      <td align="center" ><%="#{x[1]}"%></td>
     </tr>
   <%end%>
 </table>
