@@ -4,13 +4,16 @@
 <p style="font-size:20px">Welcome <%="#{@currentUser}"%></p>
 <p>These are all the NPCs known to you</p>
 
-<table align="center">
+<table>
   <tr>
-    <th text-align="center"> Name </th>
+    <th style="text-align: center"> Name </th>
+    <th style="text-align: center">Town</th>
   </tr>
-  <% @result.each do |x| %>
-      <tr>
-        <td align="center"><%="#{x}"%></td>
-      </tr>
-  <% end %>
+
+  <% @results.each do |x| %>
+    <tr>
+      <td align="center"><%="#{x[0]}"%></td>
+      <td align="center"><%="#{x[1]}"%></td>
+    </tr>
+  <%end%>
 </table>

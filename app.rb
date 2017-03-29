@@ -37,9 +37,17 @@ end
 get '/player' do
   halt(401, 'Not Authorized') unless (session[:role] == 'Admin' || session[:role] == 'Player')
   @currentUser = session[:name]
-  cid = session[:campaign_id]
+  cid = session[:cid]
   db = SQLite3::Database.new("development.db")
-  @result = db.execute("select n.name from campaigns c, npcs n where c.npc_id = n.npc_id and c.is_known = 't'")
+  # only show npcs known to player
+  if session[:cid] >0
+    @results = db.execute("select n.name,c.town from campaigns c, npcs n
+    where c.npc_id = n.npc_id and c.is_known = 't' and c.cid = (?)", cid)
+  else # show all npcs in any campaign to admin
+    @results = db.execute("select n.name,c.town from campaigns c, npcs n
+    where c.npc_id = n.npc_id")
+
+    end
   erb :player
 end
 
@@ -60,15 +68,17 @@ post '/login' do
   if user.nil?
     redirect '/login'
   else
-      if user[:role].casecmp('Admin') == 0
-        session[:role] = 'Admin'
-        session[:name] = user[:username]
-        redirect to('/admin')
+    if user[:role].casecmp('Admin') == 0
+      session[:role] = 'Admin'
+      session[:name] = user[:username]
+      session[:cid] = user[:campaign_id]
+      redirect to('/admin')
 
-      elsif user[:role].casecmp('Player') == 0
-        session[:role] = 'Player'
-        session[:name] = user[:username]
-        redirect to('/player')
+    elsif user[:role].casecmp('Player') == 0
+      session[:role] = 'Player'
+      session[:name] = user[:username]
+      session[:cid] = user[:campaign_id]
+      redirect to('/player')
 
     else
       redirect '/login'
