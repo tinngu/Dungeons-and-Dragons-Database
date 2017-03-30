@@ -44,11 +44,26 @@ get '/player' do
     @results = db.execute("select n.name,c.town from campaigns c, npcs n
     where c.npc_id = n.npc_id and c.is_known = 't' and c.cid = (?)", cid)
   else # show all npcs in any campaign to admin
-    @results = db.execute("select n.name,c.town from campaigns c, npcs n
-    where c.npc_id = n.npc_id")
+    @results = db.execute('select n.name,c.town from campaigns c, npcs n
+    where c.npc_id = n.npc_id')
   end
   db.close
   erb :player
+end
+
+get '/database' do
+  halt(401, 'Not Authorized') unless (session[:role] == 'Admin')
+  @currentUser = session[:name]
+  cid = session[:cid]
+  db = SQLite3::Database.new("development.db")
+
+  if session[:cid] == 0
+    @results0 = db.execute('select * from npcs')
+    @results1 = db.execute('select * from campaigns')
+    @results2 = db.execute('select * from npc_stats')
+  end
+  db.close
+  erb :database
 end
 
 get '/dataView' do

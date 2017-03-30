@@ -1,0 +1,83 @@
+<h1 style="padding-left: 80px">Master Database View</h1>
+
+<br>
+<p style="padding-left: 80px">All detailed information for every NPC and Campaign.</p>
+
+<table>
+  <tr>
+    <th style="text-align: center; width:10%;"> NPCs </th>
+    <th style="text-align: center; width:10%;">Campaigns</th>
+    <th style="text-align: center; width:50%;">NPC Stats</th>
+  </tr>
+  <tr style="vertical-align: top">
+    <td width="30%">
+      <table style="margin-left: 80px; margin-bottom: 50px; width:10%;">
+        <tr>
+          <th style="text-align: center"> NPC ID </th>
+          <th style="text-align: center">Name</th>
+          <th style="text-align: center"> In Campaign </th>
+        </tr>
+
+        <% @results0.each do |x| %>
+          <tr>
+            <td align="center" ><%="#{x[0]}"%></td>
+            <td align="center" ><%="#{x[1]}"%></td>
+            <td align="center" ><%="#{x[2]}"%></td>
+          </tr>
+        <%end%>
+      </table>
+    </td>
+
+    <td width="30%">
+      <table style="margin-left: 80px; margin-bottom: 50px; width:10%;">
+        <tr>
+          <th style="text-align: center"> NPC ID </th>
+          <th style="text-align: center">Campaign ID</th>
+          <th style="text-align: center"> Town </th>
+          <th style="text-align: center">IsKnown</th>
+        </tr>
+
+        <% @results1.each do |x| %>
+            <tr>
+              <td align="center" ><%="#{x[0]}"%></td>
+              <td align="center" ><%="#{x[1]}"%></td>
+              <td align="center" ><%="#{x[2]}"%></td>
+              <td align="center" ><%="#{x[3]}"%></td>
+            </tr>
+        <%end%>
+      </table>
+    </td>
+
+    <td width="40%">
+      <table style="margin-left: 80px; margin-bottom: 50px; width:50%;">
+        <tr>
+          <th style="text-align: center"> NPC ID </th>
+          <th style="text-align: center">Race</th>
+          <th style="text-align: center">Alignment</th>
+          <th style="text-align: center">Type</th>
+          <th style="text-align: center">Charisma</th>
+          <th style="text-align: center">Wisdom</th>
+          <th style="text-align: center">Intelligence</th>
+          <th style="text-align: center">Constitution</th>
+          <th style="text-align: center">Dexterity</th>
+          <th style="text-align: center">Strength</th>
+        </tr>
+
+        <% @results2.each do |x| %>
+            <tr>
+              <td align="center" ><%="#{x[0]}"%></td>
+              <td align="center" ><%="#{x[1]}"%></td>
+              <td align="center" ><%="#{x[2]}"%></td>
+              <td align="center" ><%="#{x[3]}"%></td>
+              <td align="center" ><%="#{x[4]}"%></td>
+              <td align="center" ><%="#{x[5]}"%></td>
+              <td align="center" ><%="#{x[6]}"%></td>
+              <td align="center" ><%="#{x[7]}"%></td>
+              <td align="center" ><%="#{x[8]}"%></td>
+              <td align="center" ><%="#{x[9]}"%></td>
+            </tr>
+        <%end%>
+      </table>
+    </td>
+  </tr>
+</table>
