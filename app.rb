@@ -29,13 +29,13 @@ get '/logout' do
   redirect to ('/')
 end
 
-get '/admin' do
-  halt(401, 'Not Authorized') unless session[:role] == 'Admin'
-  erb :admin
+get '/dm' do
+  halt(401, 'Not Authorized') unless session[:role] == 'DM'
+  erb :dm
 end
 
 get '/player' do
-  halt(401, 'Not Authorized') unless (session[:role] == 'Admin' || session[:role] == 'Player')
+  halt(401, 'Not Authorized') unless (session[:role] == 'DM' || session[:role] == 'Player')
   @currentUser = session[:name]
   cid = session[:cid]
   db = SQLite3::Database.new("development.db")
@@ -52,7 +52,7 @@ get '/player' do
 end
 
 get '/database' do
-  halt(401, 'Not Authorized') unless (session[:role] == 'Admin')
+  halt(401, 'Not Authorized') unless (session[:role] == 'DM')
   @currentUser = session[:name]
   cid = session[:cid]
   db = SQLite3::Database.new("development.db")
@@ -67,9 +67,9 @@ get '/database' do
 end
 
 get '/dataView' do
-  halt(401, 'Not Authorized') unless session[:role] == 'Admin'
+  halt(401, 'Not Authorized') unless session[:role] == 'DM'
   db = SQLite3::Database.new("development.db")
-  @dataArray = db.execute("select username from dung_drags")
+  @dataArray = db.execute('select username, role, campaign_id from dung_drags')
   db.close
   erb :dataView
 end
@@ -79,11 +79,11 @@ post '/login' do
   if user.nil?
     redirect '/login'
   else
-    if user[:role].casecmp('Admin') == 0
-      session[:role] = 'Admin'
+    if user[:role].casecmp('DM') == 0
+      session[:role] = 'DM'
       session[:name] = user[:username]
       session[:cid] = user[:campaign_id]
-      redirect to('/admin')
+      redirect to('/dm')
 
     elsif user[:role].casecmp('Player') == 0
       session[:role] = 'Player'
@@ -98,7 +98,7 @@ post '/login' do
 end
 
 post '/uploadUsers' do
-  halt(401, 'Not Authorized') unless session[:role] == 'Admin'
+  halt(401, 'Not Authorized') unless session[:role] == 'DM'
 
   begin
     File.open(params['file_source'][:filename], 'wb') do |f|
@@ -124,7 +124,7 @@ post '/uploadUsers' do
     puts 'Error: Invalid file upload'
   end
 
-  redirect '/admin'
+  redirect '/dm'
 end
 
 #Used for extracting zip files
@@ -141,7 +141,7 @@ def extract_zip(file, destination)
 end
 
 post '/uploadWebsites' do
-  halt(401, 'Not Authorized') unless session[:role] == 'Admin'
+  halt(401, 'Not Authorized') unless session[:role] == 'DM'
   begin
     File.open(params['file_source'][:filename], 'wb') do |f|
       f.write(params['file_source'][:tempfile].read)
@@ -156,13 +156,13 @@ post '/uploadWebsites' do
   rescue Exception => error
     puts error.message
     puts error.backtrace.inspect
-    redirect '/admin'
+    redirect '/dm'
   end
 
 end
 
 post '/exportCSV' do
-  halt(401, 'Not Authorized') unless session[:role] == 'Admin'
+  halt(401, 'Not Authorized') unless session[:role] == 'DM'
   begin
     @votingData = DungDrags.all #Stores all data into variable
     @csv = CSV.generate do |csv| #Generates CSV format
@@ -185,7 +185,7 @@ post '/exportCSV' do
 
   end
 
-  redirect '/admin'
+  redirect '/dm'
 end
 
 

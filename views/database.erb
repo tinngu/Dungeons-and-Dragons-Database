@@ -1,3 +1,22 @@
+
+<head>
+  <style>
+    table, td, th {
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: auto;
+    }
+
+    th, td {
+      padding: 5px;
+    }
+  </style>
+</head>
+
 <h1 style="padding-left: 80px">Master Database View</h1>
 
 <br>
@@ -5,13 +24,13 @@
 
 <table>
   <tr>
-    <th style="text-align: center; width:10%;"> NPCs </th>
-    <th style="text-align: center; width:10%;">Campaigns</th>
-    <th style="text-align: center; width:50%;">NPC Stats</th>
+    <th style="text-align: center"> NPCs </th>
+    <th style="text-align: center">Campaigns</th>
+    <th style="text-align: center">NPC Stats</th>
   </tr>
   <tr style="vertical-align: top">
     <td width="30%">
-      <table style="margin-left: 80px; margin-bottom: 50px; width:10%;">
+      <table style="margin-left: 80px; margin-bottom: 50px;width: auto">
         <tr>
           <th style="text-align: center"> NPC ID </th>
           <th style="text-align: center">Name</th>
@@ -29,27 +48,27 @@
     </td>
 
     <td width="30%">
-      <table style="margin-left: 80px; margin-bottom: 50px; width:10%;">
+      <table style="margin-left: 80px; margin-bottom: 50px;width: auto">
         <tr>
-          <th style="text-align: center"> NPC ID </th>
-          <th style="text-align: center">Campaign ID</th>
-          <th style="text-align: center"> Town </th>
-          <th style="text-align: center">IsKnown</th>
+          <th style="text-align: center;width: auto"> NPC ID </th>
+          <th style="text-align: center;width: auto">Campaign ID</th>
+          <th style="text-align: center;width: auto"> Town </th>
+          <th style="text-align: center;width: auto">IsKnown</th>
         </tr>
 
         <% @results1.each do |x| %>
             <tr>
-              <td align="center" ><%="#{x[0]}"%></td>
-              <td align="center" ><%="#{x[1]}"%></td>
-              <td align="center" ><%="#{x[2]}"%></td>
-              <td align="center" ><%="#{x[3]}"%></td>
+              <td align="center" width = "auto"><%="#{x[0]}"%></td>
+              <td align="center" width = "auto"><%="#{x[1]}"%></td>
+              <td align="center" width = "auto"><%="#{x[2]}"%></td>
+              <td align="center" width = "auto"><%="#{x[3]}"%></td>
             </tr>
         <%end%>
       </table>
     </td>
 
     <td width="40%">
-      <table style="margin-left: 80px; margin-bottom: 50px; width:50%;">
+      <table style="margin-left: 80px; margin-bottom: 50px;width: auto">
         <tr>
           <th style="text-align: center"> NPC ID </th>
           <th style="text-align: center">Race</th>

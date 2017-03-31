@@ -1,12 +1,36 @@
+<head>
+  <style>
+    table, td, th {
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 5px;
+    }
+  </style>
+</head>
+
+
 <ul>
-  <table align="center">
+  <table style="margin-left: 10px">
     <tr>
       <th text-align="center"> Name </th>
+      <th text-align="center"> Role </th>
+      <th text-align="center"> Campaign ID </th>
     </tr>
-    <% @dataArray.each do |name| %>
+    <% @dataArray.each do |x| %>
         <tr>
-          <td align="center"><%="#{name[0]}"%></td>
+          <td align="center"><%="#{x[0]}"%></td>
+          <td align="center"><%="#{x[1]}"%></td>
+          <td align="center"><%="#{x[2]}"%></td>
         </tr>
     <% end %>
   </table>
+  <p style="margin-left: 10px">Note a campaign ID of 0 indicates you are a DM and have access to all campaigns<br>
+  Otherwise it specifies the campaign the player belongs to.</p>
 </ul>
