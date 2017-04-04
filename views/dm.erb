@@ -10,3 +10,98 @@ and some other misc tools</p>
 
 <br>
 
+<h3 style="margin-left: 80px">Add NPC</h3>
+
+<form action='/addNPC' method='POST' style="margin-left: 80px">
+  <!--Name: <input type="text" name="Name"><br>-->
+  <!--Race: <input type="text" name="Name"><br>-->
+  <!--Alignment: <input type="text" name="Name"><br>-->
+  <!--Type: <input type="text" name="Name"><br>-->
+  <!--Charisma: <input type="text" name="Name"><br>-->
+  <!--Wisdom: <input type="text" name="Name"><br>-->
+  <!--Intelligence: <input type="text" name="Name"><br>-->
+  <!--Intelligence: <input type="text" name="Name"><br>-->
+  <!--Dexterity: <input type="text" name="Name"><br>-->
+  <!--Strength: <input type="text" name="Name"><br>-->
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-xs-3">
+        <label>Name:</label>
+        <input type="text" class="form-control" name="Name">
+      </div>
+      <div class="col-xs-3">
+        <label>Race:</label>
+        <input type="text" class="form-control" name="Race">
+      </div>
+      <div class="col-xs-3">
+        <label>Alignment:</label>
+        <select class="form-control" name="Alignment">
+          <option value="Neutral">Neutral</option>
+          <option value="Good">Good</option>
+          <option value="Evil">Evil</option>
+        </select>
+      </div>
+      <div class="col-xs-3">
+        <label>Type:</label>
+        <input type="text" class="form-control" name="Type">
+      </div>
+    </div>
+    <div class="col-md-12">
+      <br>
+    </div>
+    <div class="col-md-12">
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Charisma:</label>
+          <select class="form-control" name="Charisma">
+            <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Wisdom:</label>
+          <select class="form-control" name="Wisdom">
+            <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Intelligence:</label>
+          <select class="form-control" name="Intelligence">
+            <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Constitution:</label>
+          <select class="form-control" name="Constitution">
+            <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Dexterity:</label>
+          <select class="form-control" name="Dexterity">
+            <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Strength:</label>
+          <select class="form-control" name="Strength">
+            <option>8</option> <option>9</option> <option>10</option> <option>11</option> <option>12</option> <option>13</option> <option>14</option> <option>15</option> <option>16</option> <option>17</option> <option>18</option> <option>19</option> <option>20</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <button type="submit" class="btn btn-default">Add NPC to database</button>
+
+</form>
