@@ -207,3 +207,12 @@ get '/user/:username' do
 
 
 end
+
+post '/addNPC' do
+  halt(401, 'Not Authorized') unless session[:role] == 'DM'
+  begin
+    NPC_stats.create(:Race => params[:Race], :Alignment => params[:Alignment], :Type => params[:Type], :Charisma => params[:Charisma], :Wisdom => params[:Wisdom], :Intelligence => params[:Intelligence], :Constitution => params[:Constitution], :Dexterity => params[:Dexterity], :Strength => params[:Strength])
+    NPC.create(:name => params[:Name], :in_Campaign => false)
+  end
+  redirect '/dm'
+end

@@ -28,11 +28,20 @@ and some other misc tools</p>
     <div class="col-md-12">
       <div class="col-xs-3">
         <label>Name:</label>
-        <input type="text" class="form-control" name="Name">
+        <input type="text" class="form-control" name="Name" required>
       </div>
       <div class="col-xs-3">
         <label>Race:</label>
-        <input type="text" class="form-control" name="Race">
+        <select class="form-control" name="Race">
+          <option value="Gnome">Gnome</option>
+          <option value="Halfling">Halfling</option>
+          <option value="Human">Human</option>
+          <option value="Dwarf">Dwarf</option>
+          <option value="Dragonborn">Dragonborn</option>
+          <option value="Elf">Elf</option>
+          <option value="Half-Elf">Half-Elf</option>
+          <option value="Tiefling">Tiefling</option>
+        </select>
       </div>
       <div class="col-xs-3">
         <label>Alignment:</label>
@@ -44,7 +53,12 @@ and some other misc tools</p>
       </div>
       <div class="col-xs-3">
         <label>Type:</label>
-        <input type="text" class="form-control" name="Type">
+        <select class="form-control" name="Type">
+          <option value="Merchant">Merchant</option>
+          <option value="Fighter">Fighter</option>
+          <option value="Commoner">Commoner</option>
+          <option value="Mage">Mage</option>
+        </select>
       </div>
     </div>
     <div class="col-md-12">
