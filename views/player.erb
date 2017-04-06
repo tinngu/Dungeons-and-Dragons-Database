@@ -37,3 +37,60 @@
     </tr>
   <%end%>
 </table>
+
+<br>
+
+<table style="margin-left: 40px">
+  <tr>
+    <!--Dice Buttons-->
+    <th>
+      <button onclick="rollDie(4)">Roll 4-die</button>
+    </th>
+    <th>
+      <button onclick="rollDie(6)">Roll 6-die</button>
+    </th>
+    <th>
+      <button onclick="rollDie(8)">Roll 8-die</button>
+    </th>
+    <th>
+      <button onclick="rollDie(10)">Roll 10-die</button>
+    </th>
+    <th>
+      <button onclick="rollDie(12)">Roll 12-die</button>
+    </th>
+    <th>
+      <button onclick="rollDie(20)">Roll 20-die</button>
+    </th>
+  </tr>
+
+  <!--Dice Results-->
+  <tr>
+    <td>
+      <p id="4-die"></p>
+    </td>
+    <td>
+      <p id="6-die"></p>
+    </td>
+    <td>
+      <p id="8-die"></p>
+    </td>
+    <td>
+      <p id="10-die"></p>
+    </td>
+    <td>
+      <p id="12-die"></p>
+    </td>
+    <td>
+      <p id="20-die"></p>
+    </td>
+  </tr>
+</table>
+
+<!-- Dice Function! -->
+<script>
+  function rollDie(n) {
+    var x;
+    x = Math.floor((Math.random() * n) + 1);
+    document.getElementById(n + "-die").innerHTML = x;
+  }
+</script>
