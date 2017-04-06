@@ -84,6 +84,12 @@
       <p id="20-die"></p>
     </td>
   </tr>
+
+  <tr>
+    <th colspan="6" style="text-align: center">
+      <button onclick="clearDie()">Clear Rolls</button>
+    </th>
+  </tr>
 </table>
 
 <!-- Dice Function! -->
@@ -92,5 +98,16 @@
     var x;
     x = Math.floor((Math.random() * n) + 1);
     document.getElementById(n + "-die").innerHTML = x;
+  }
+</script>
+
+<script>
+  function clearDie() {
+    document.getElementById("4-die").innerHTML = "";
+    document.getElementById("6-die").innerHTML = "";
+    document.getElementById("8-die").innerHTML = "";
+    document.getElementById("10-die").innerHTML = "";
+    document.getElementById("12-die").innerHTML = "";
+    document.getElementById("20-die").innerHTML = "";
   }
 </script>
