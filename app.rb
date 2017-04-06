@@ -34,18 +34,34 @@ get '/dm' do
   erb :dm
 end
 
+get '/addPlayer' do
+  erb :addPlayer
+end
+
+get '/addDM' do
+  erb :addDM
+end
+
+
+get '/successPage' do
+  db = SQLite3::Database.new('development.db')
+  @results = db.execute('select role, username, campaign_id
+                             from dung_drags order by rowid desc limit 1')
+  erb :successPage
+end
+
 get '/player' do
   halt(401, 'Not Authorized') unless (session[:role] == 'DM' || session[:role] == 'Player')
   @currentUser = session[:name]
   cid = session[:cid]
-  db = SQLite3::Database.new("development.db")
-  # only show npcs known to player
-  if session[:cid] > 0
+  db = SQLite3::Database.new('development.db')
+  # only show npcs known to player for the campaign they are in
+  if session[:role] == 'Player'
     @results = db.execute("select n.name,c.town from campaigns c, npcs n
-    where c.npc_id = n.npc_id and c.is_known = 't' and c.cid = (?)", cid)
-  else # show all npcs in any campaign to admin
+    where c.npc_id = n.npc_id and c.is_known = 't' and c.cid = ?", cid)
+  else # show all npcs in campaign DM is in charge of
     @results = db.execute('select n.name,c.town from campaigns c, npcs n
-    where c.npc_id = n.npc_id')
+    where c.npc_id = n.npc_id and c.cid = ?', cid)
   end
   db.close
   erb :player
@@ -53,15 +69,11 @@ end
 
 get '/database' do
   halt(401, 'Not Authorized') unless (session[:role] == 'DM')
-  @currentUser = session[:name]
-  cid = session[:cid]
   db = SQLite3::Database.new("development.db")
 
-  if session[:cid] == 0
-    @results0 = db.execute('select * from npcs')
-    @results1 = db.execute('select * from campaigns')
-    @results2 = db.execute('select * from npc_stats')
-  end
+  @results0 = db.execute('select * from npcs')
+  @results1 = db.execute('select * from campaigns')
+  @results2 = db.execute('select * from npc_stats')
   db.close
   erb :database
 end
@@ -116,4 +128,30 @@ post '/addNPC' do
     db.close
   end
   redirect '/dm'
+end
+
+post '/addPlayer' do
+  begin
+    # insert new player into database
+    db = SQLite3::Database.new('development.db')
+    db.execute("insert into dung_drags values(?,?,'Player',?)",
+               [params[:USERNAME], params[:PASSWORD], params[:CID]])
+    db.close
+  end
+  redirect '/successPage'
+end
+
+post '/addDM' do
+  begin
+    # automatically assign a new campaign ID to DM by incrementing largest campaign_id by 1
+    db = SQLite3::Database.new('development.db')
+    newCID = db.get_first_value("select max(campaign_id) from dung_drags
+                                     where role = 'DM'")
+    newCID += 1
+    # insert new DM into database
+    db.execute("insert into dung_drags values(?,?,'DM',?)",
+               [params[:USERNAME], params[:PASSWORD], newCID])
+    db.close
+  end
+  redirect '/successPage'
 end
