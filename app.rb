@@ -180,10 +180,18 @@ post '/add2Camp' do
     redirect '/dm'
   end
   db = SQLite3::Database.new('development.db')
+  test_value = db.get_first_value('select npc_id from campaigns
+                                      where npc_id = ? and cid = ?',
+                                  [params[:npc_id], session[:cid]])
+  if test_value.to_s != params[:npc_id]
   db.execute("
   INSERT INTO campaigns (npc_id, cid, town, is_known)
   VALUES (?, ?, ?, 'false' )",
              [params[:npc_id], session[:cid], params[:town]])
+  db.close
+  redirect '/dm'
+  end
+  db.close
   redirect '/dm'
 end
 
