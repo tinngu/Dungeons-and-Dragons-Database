@@ -52,13 +52,12 @@ end
 
 get '/player' do
   halt(401, 'Not Authorized') unless (session[:role] == 'DM' || session[:role] == 'Player')
-  @currentUser = session[:name]
   cid = session[:cid]
   db = SQLite3::Database.new('development.db')
   # only show npcs known to player for the campaign they are in
   if session[:role] == 'Player'
-    @results = db.execute("select n.name,c.town from campaigns c, npcs n
-    where c.npc_id = n.npc_id and c.is_known = 't' and c.cid = ?", cid)
+    @results = db.execute("select n.name,c.town, ns.type, ns.race  from campaigns c, npcs n, npc_stats ns
+where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.is_known = 't' and c.cid = ?", cid)
   else # show all npcs in campaign DM is in charge of
     @results = db.execute('select n.name,c.town from campaigns c, npcs n
     where c.npc_id = n.npc_id and c.cid = ?', cid)

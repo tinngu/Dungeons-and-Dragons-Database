@@ -1,7 +1,7 @@
 <head>
   <style>
     table, td, th {
-      border: 2px solid #000;
+      border: 1px solid #1b6d85;
       text-align: left;
     }
 
@@ -21,26 +21,31 @@
 <h1 style="padding-left: 80px">Player Page</h1>
 
 <br>
-<p style="font-size:20px; padding-left: 80px;">Welcome <%="#{@currentUser}"%></p>
+<p style="font-size:20px; padding-left: 80px;">Welcome <%= session[:name]%></p>
 <p style="padding-left: 80px">These are all the NPCs known to you</p>
 
 <table style="margin-left: 80px">
   <tr>
     <th > Name </th>
-    <th >Town</th>
+    <th > Town </th>
+    <th > Type </th>
+    <th > Race </th>
+
   </tr>
 
   <% @results.each do |x| %>
     <tr>
       <td ><%="#{x[0]}"%></td>
       <td ><%="#{x[1]}"%></td>
+      <td ><%="#{x[2]}"%></td>
+      <td ><%="#{x[3]}"%></td>
     </tr>
   <%end%>
 </table>
 
 <br>
 
-<table style="margin-left: 40px">
+<table style="margin-left: 80px">
   <tr>
     <!--Dice Buttons-->
     <th>
