@@ -121,7 +121,8 @@
 <br>
 <h3 style="margin-left: 80px">Add NPC to your campaign</h3>
 <form style="margin-left: 80px" action="/add2Camp" method="post">
-  Enter NPC ID: <input type="number" name="npc_id" required class="form-control" style="width: 10%"><br>
+  <label>Select NPC ID:</label>
+  <select name="number" class="form-control" id="add_pool" style="width: 15%"></select><br>
   Enter Town:   <input type="text" name="town" required class="form-control" style="width: 20%"><br>
   <button type="submit" class="btn btn-default">ADD NPC</button>
 </form>
@@ -135,14 +136,14 @@
 <form action='/remNPC' method='POST' style="margin-left: 80px">
   <!--A LITTLE TRICKY TRYING TO GET ALL NPCS TO POPULATE THIS DROP DOWN SELECT-->
   <label>Select NPC ID:</label>
-  <select name="npc_id" class="form-control" id="npcNameList" style="width: 15%"></select>
+  <select name="npc_id" class="form-control" id="remove_pool" style="width: 15%"></select>
   <br>
   <button type="submit" class="btn btn-default">Remove</button>
 </form>
 
 <script type="text/javascript" charset="utf-8">
-  var select = document.getElementById("npcNameList");
-  var options = <%= @results %>;
+  var select = document.getElementById("add_pool");
+  var options = <%= @add_pool %>;
   for(var i = 0; i < options.length; i++) {
     var opt = options[i];
     var el = document.createElement("option");
@@ -151,3 +152,16 @@
     select.appendChild(el);
   }
 </script>
+
+<script type="text/javascript" charset="utf-8">
+  var select = document.getElementById("remove_pool");
+  var options = <%= @remove_pool %>;
+  for(var i = 0; i < options.length; i++) {
+    var opt = options[i];
+    var el = document.createElement("option");
+    el.textContent = opt;
+    el.value = opt;
+    select.appendChild(el);
+  }
+</script>
+

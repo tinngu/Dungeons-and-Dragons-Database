@@ -33,9 +33,11 @@ get '/dm' do
   halt(401, 'Not Authorized') unless session[:role] == 'DM'
   cid = session[:cid]
   db = SQLite3::Database.new('development.db')
-  @results = db.execute('select n.npc_id from campaigns c, npcs n, npc_stats ns where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.cid = ?', cid)
+  @remove_pool = db.execute('select n.npc_id from campaigns c, npcs n, npc_stats ns where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.cid = ?', cid)
+  @add_pool = db.execute('select n.npc_id from campaigns c, npcs n, npc_stats ns except select n.npc_id from campaigns c, npcs n, npc_stats ns where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.cid = ?', cid)
   db.close
-  @results = @results.flatten
+  @remove_pool = @remove_pool.flatten
+  @add_pool = @add_pool.flatten
   erb :dm
 end
 
