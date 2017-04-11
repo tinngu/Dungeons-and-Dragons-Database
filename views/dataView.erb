@@ -16,21 +16,52 @@
 </head>
 
 
-<ul>
-  <table style="margin-left: 10px">
-    <tr>
-      <th text-align="center"> Name </th>
-      <th text-align="center"> Role </th>
-      <th text-align="center"> Campaign ID </th>
-    </tr>
-    <% @dataArray.each do |x| %>
-        <tr>
-          <td align="center"><%="#{x[0]}"%></td>
-          <td align="center"><%="#{x[1]}"%></td>
-          <td align="center"><%="#{x[2]}"%></td>
-        </tr>
-    <% end %>
-  </table>
-  <p style="margin-left: 10px">Note a campaign ID of 0 indicates you are a DM and have access to all campaigns<br>
-  Otherwise it specifies the campaign the player belongs to.</p>
-</ul>
+<p style="margin-left: 80px"><b>Dm/Player Info</b></p>
+<table style="margin-left: 80px">
+  <tr>
+    <th text-align="center"> Name </th>
+    <th text-align="center"> Role </th>
+  </tr>
+  <% @dataArray.each do |x| %>
+      <tr>
+        <td align="center"><%="#{x[0]}"%></td>
+        <td align="center"><%="#{x[1]}"%></td>
+      </tr>
+  <% end %>
+</table>
+<br>
+<p style="margin-left: 80px"><b>NPC Info</b></p>
+<table style="margin-left: 80px">
+  <tr>
+    <th text-align="center"> NPC ID </th>
+    <th text-align="center"> Name </th>
+    <th text-align="center"> Race </th>
+    <th text-align="center"> Alignment </th>
+    <th text-align="center"> Type </th>
+    <th text-align="center"> Charisma </th>
+    <th text-align="center"> Wisdom </th>
+    <th text-align="center"> Intelligence </th>
+    <th text-align="center"> Constitution </th>
+    <th text-align="center"> Dexterity </th>
+    <th text-align="center"> Strength </th>
+    <th text-align="center"> Town </th>
+    <th text-align="center"> Is Known </th>
+  </tr>
+  <% @npcs.each do |x| %>
+  <tr>
+    <td align="center"><%="#{x[0]}"%></td>
+    <td align="center"><%="#{x[1]}"%></td>
+    <td align="center"><%="#{x[2]}"%></td>
+    <td align="center"><%="#{x[3]}"%></td>
+    <td align="center"><%="#{x[4]}"%></td>
+    <td align="center"><%="#{x[5]}"%></td>
+    <td align="center"><%="#{x[6]}"%></td>
+    <td align="center"><%="#{x[7]}"%></td>
+    <td align="center"><%="#{x[8]}"%></td>
+    <td align="center"><%="#{x[9]}"%></td>
+    <td align="center"><%="#{x[10]}"%></td>
+    <td align="center"><%="#{x[11]}"%></td>
+    <td align="center"><%="#{x[12]}"%></td>
+  </tr>
+  <% end %>
+</table>

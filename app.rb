@@ -81,7 +81,16 @@ end
 get '/dataView' do
   halt(401, 'Not Authorized') unless session[:role] == 'DM'
   db = SQLite3::Database.new("development.db")
-  @dataArray = db.execute('select username, role, campaign_id from dung_drags')
+  # get player/dm info
+  @dataArray = db.execute('select username, role from dung_drags
+                               where campaign_id = ?', session[:cid])
+  # get npc info for campaign DM is in charge of
+  @npcs = db.execute('select n.npc_id, n.name, ns.race, ns.alignment, ns.type,
+  ns.charisma, ns.wisdom, ns. intelligence,
+  ns.constitution, ns. dexterity, ns.strength, c.town, c.is_known
+  from npcs n, npc_stats ns, campaigns c
+  where n.npc_id = ns.npc_id and c.npc_id = n.npc_id and c.cid = ?',
+                     session[:cid])
   db.close
   erb :dataView
 end

@@ -1,11 +1,10 @@
 <h1 style="margin-left: 80px">Dungeon Master Page</h1>
-<p style="margin-left: 80px">This page is to provide all the tools for maintaining NPCs across multiple campaigns,
-and some other misc tools</p>
+<p style="margin-left: 80px">Welcome <%= session[:name] %>, you are currently running campaign with ID number: <%= session[:cid] %> </p>
 
-<h3 style="margin-left: 80px">DM/Players</h3>
+<h3 style="margin-left: 80px">Campaign Info</h3>
 
 <form action='/dataView' method='GET' style="margin-left: 80px">
-  <button type="submit" class="btn btn-default">View DMs/Players</button>
+  <button type="submit" class="btn btn-default">View Campaign Info</button>
 </form>
 
 <br>
