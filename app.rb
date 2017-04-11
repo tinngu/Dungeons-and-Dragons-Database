@@ -183,5 +183,6 @@ post '/add2Camp' do
   INSERT INTO campaigns (npc_id, cid, town, is_known)
   VALUES (?, ?, ?, 'false' )",
              [params[:npc_id], session[:cid], params[:town]])
+  redirect '/dm'
 end
 
