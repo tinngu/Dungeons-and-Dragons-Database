@@ -169,3 +169,19 @@ post '/addDM' do
   end
   redirect '/successPage'
 end
+
+post '/add2Camp' do
+  if params[:npc_id].to_i < 1
+    redirect '/dm'
+  end
+  db = SQLite3::Database.new('development.db')
+  test = db.execute('select * from campaign where npc')
+  db.execute("UPDATE npcs
+  SET in_campaign = 't'
+  WHERE npc_id = ?", params[:npc_id])
+  db.execute("
+  INSERT INTO campaigns (npc_id, cid, town, is_known)
+  VALUES (?, ?, ?, 'false' )",
+             [params[:npc_id], session[:cid], params[:town]])
+end
+
