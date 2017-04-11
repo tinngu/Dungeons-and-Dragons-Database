@@ -56,11 +56,17 @@ get '/player' do
   db = SQLite3::Database.new('development.db')
   # only show npcs known to player for the campaign they are in
   if session[:role] == 'Player'
-    @results = db.execute("select n.name,c.town, ns.type, ns.race  from campaigns c, npcs n, npc_stats ns
-where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.is_known = 't' and c.cid = ?", cid)
-  else # show all npcs in campaign DM is in charge of
-    @results = db.execute('select n.name,c.town from campaigns c, npcs n
-    where c.npc_id = n.npc_id and c.cid = ?', cid)
+    @results = db.execute("
+    select n.name,c.town, ns.type, ns.race
+    from campaigns c, npcs n, npc_stats ns
+    where c.npc_id = n.npc_id and n.npc_id = ns.npc_id
+    and c.is_known = 't' and c.cid = ?", cid)
+  end
+  if session[:role] == 'DM' # show all npcs in campaign DM is in charge of
+    @results = db.execute('select n.name,c.town, ns.type, ns.race
+    from campaigns c, npcs n, npc_stats ns
+    where c.npc_id = n.npc_id and n.npc_id = ns.npc_id
+    and  c.cid = ?', cid)
   end
   db.close
   erb :player
@@ -79,7 +85,7 @@ end
 
 get '/dataView' do
   halt(401, 'Not Authorized') unless session[:role] == 'DM'
-  db = SQLite3::Database.new("development.db")
+  db = SQLite3::Database.new('development.db')
   # get player/dm info
   @dataArray = db.execute('select username, role from dung_drags
                                where campaign_id = ?', session[:cid])
