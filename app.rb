@@ -175,7 +175,6 @@ post '/add2Camp' do
     redirect '/dm'
   end
   db = SQLite3::Database.new('development.db')
-  test = db.execute('select * from campaign where npc')
   db.execute("UPDATE npcs
   SET in_campaign = 't'
   WHERE npc_id = ?", params[:npc_id])
