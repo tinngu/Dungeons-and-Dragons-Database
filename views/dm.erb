@@ -125,3 +125,27 @@
   Enter Town:   <input type="text" name="town" required class="form-control" style="width: 20%"><br>
   <button type="submit" class="btn btn-default">ADD NPC</button>
 </form>
+
+<br>
+<br>
+<!--SECTIONG FOR REMOVING AN NPC!-->
+
+<form action='/remNPC/@id/@npcName' method='POST' style="margin-left: 80px">
+  <!--A LITTLE TRICKY TRYING TO GET ALL NPCS TO POPULATE THIS DROP DOWN SELECT-->
+  <label>Name:</label>
+  <select id="npcNameList" class="form-control" id="npcNameList"></select>
+  <br>
+  <button type="submit" class="btn btn-default">Remove</button>
+</form>
+
+<script type="text/javascript" charset="utf-8">
+  var select = document.getElementById("npcNameList");
+  var options = <%= @results %>;
+  for(var i = 0; i < options.length; i++) {
+    var opt = options[i];
+    var el = document.createElement("option");
+    el.textContent = opt;
+    el.value = opt;
+    select.appendChild(el);
+  }
+</script>

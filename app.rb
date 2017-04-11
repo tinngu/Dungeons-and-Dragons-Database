@@ -31,6 +31,11 @@ end
 
 get '/dm' do
   halt(401, 'Not Authorized') unless session[:role] == 'DM'
+  cid = session[:cid]
+  db = SQLite3::Database.new('development.db')
+  @results = db.execute('select n.npc_id, n.name from campaigns c, npcs n, npc_stats ns where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.cid = ?', cid)
+  db.close
+  @results = @results.flatten
   erb :dm
 end
 
@@ -183,5 +188,12 @@ post '/add2Camp' do
   VALUES (?, ?, ?, 'false' )",
              [params[:npc_id], session[:cid], params[:town]])
   redirect '/dm'
+end
+
+post 'remNPC/:id/:npcName' do
+  begin
+    db = SQLite3::Database.new('development.db')
+  end
+  erb :npcDeleted
 end
 
