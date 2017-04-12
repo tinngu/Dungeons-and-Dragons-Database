@@ -1,6 +1,18 @@
 <form action="/addPlayer" method="POST" style="margin-left: 80px">
-  Enter username <input type="text" name="USERNAME" required><br>
-  Enter password <input type="password" name="PASSWORD" required><br>
-  Enter Campaign ID <input type="number" name="CID" required><br>
+  Enter username <input type="text" name="USERNAME" required class="form-control" style="width: 10%"><br>
+  Enter password <input type="password" name="PASSWORD" required class="form-control" style="width: 10%"><br>
+  Select Campaign ID <select name="CID" id="cids" required class="form-control" style="width: 10%"></select><br>
   <button type="submit" class="btn btn-default">Create Account</button>
 </form>
+
+<script type="text/javascript" charset="utf-8">
+    var select = document.getElementById("cids");
+    var options = <%= @cids %>;
+    for(var i = 0; i < options.length; i++) {
+        var opt = options[i];
+        var el = document.createElement("option");
+        el.textContent = opt;
+        el.value = opt;
+        select.appendChild(el);
+    }
+</script>

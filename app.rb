@@ -33,15 +33,24 @@ get '/dm' do
   halt(401, 'Not Authorized') unless session[:role] == 'DM'
   cid = session[:cid]
   db = SQLite3::Database.new('development.db')
-  @remove_pool = db.execute('select n.npc_id from campaigns c, npcs n, npc_stats ns where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.cid = ?', cid)
-  @add_pool = db.execute('select n.npc_id from campaigns c, npcs n, npc_stats ns except select n.npc_id from campaigns c, npcs n, npc_stats ns where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.cid = ?', cid)
+  @remove_pool = db.execute('select n.npc_id from campaigns c, npcs n, npc_stats ns
+   where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.cid = ?', cid)
+  @add_pool = db.execute('select n.npc_id from campaigns c, npcs n, npc_stats ns
+   except select n.npc_id from campaigns c, npcs n, npc_stats ns
+   where c.npc_id = n.npc_id and n.npc_id = ns.npc_id and c.cid = ?', cid)
+  @unknown_pool = db.execute("select npc_id from campaigns
+  where is_known='false' and cid = ?", cid)
   db.close
   @remove_pool = @remove_pool.flatten
   @add_pool = @add_pool.flatten
+  @unknown_pool = @unknown_pool.flatten
   erb :dm
 end
 
 get '/addPlayer' do
+  db = SQLite3::Database.new('development.db')
+  @cids = db.execute("select campaign_id from dung_drags where role = 'DM'")
+  @cids = @cids.flatten
   erb :addPlayer
 end
 
@@ -54,11 +63,12 @@ get '/successPage' do
   db = SQLite3::Database.new('development.db')
   @results = db.execute('select role, username, campaign_id
                              from dung_drags order by rowid desc limit 1')
+  db.close
   erb :successPage
 end
 
 get '/player' do
-  halt(401, 'Not Authorized') unless (session[:role] == 'DM' || session[:role] == 'Player')
+  halt(401, 'Not Authorized') unless session[:role] == 'DM' || session[:role] == 'Player'
   cid = session[:cid]
   db = SQLite3::Database.new('development.db')
   # only show npcs known to player for the campaign they are in
@@ -67,7 +77,7 @@ get '/player' do
     select n.name,c.town, n.type, n.race
     from campaigns c, npcs n
     where c.npc_id = n.npc_id
-    and c.is_known = 't' and c.cid = ?", cid)
+    and c.is_known = 'true' and c.cid = ?", cid)
   end
   if session[:role] == 'DM' # show all npcs in campaign DM is in charge of
     @results = db.execute('select n.name,c.town, n.type, n.race
@@ -140,7 +150,8 @@ post '/addNPC' do
     newID = db.get_first_value('select max(npc_id) from npcs')
     newID += 1
     # add into npcs table
-    db.execute('insert into npcs values(?,?,?,?)', [newID, params[:Name], params[:Race], params[:Type]])
+    db.execute('insert into npcs values(?,?,?,?)',
+               [newID, params[:Name], params[:Race], params[:Type]])
     # add into npc_stats table
     db.execute('insert into npc_stats values(?,?,?,?,?,?,?,?)',
                [newID, params[:Alignment], params[:Charisma],
@@ -192,6 +203,14 @@ post '/remNPC' do
     db = SQLite3::Database.new('development.db')
     db.execute('DELETE from campaigns WHERE npc_id=?', params[:npc_id])
   end
+  redirect '/dm'
+end
+
+post '/makeKnown' do
+  db = SQLite3::Database.new('development.db')
+  db.execute("update campaigns set is_known = 'true'
+                  where npc_id = ? and cid = ?",
+             [params[:npc_id], session[:cid]])
   redirect '/dm'
 end
 
