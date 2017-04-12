@@ -33,13 +33,17 @@
       <table style="margin-left: 80px; margin-bottom: 50px;width: auto">
         <tr>
           <th style="text-align: center"> NPC ID </th>
-          <th style="text-align: center">Name</th>
+          <th style="text-align: center"> Name </th>
+          <th style="text-align: center"> Race </th>
+          <th style="text-align: center"> Type </th>
         </tr>
 
         <% @results0.each do |x| %>
           <tr>
             <td align="center" ><%="#{x[0]}"%></td>
             <td align="center" ><%="#{x[1]}"%></td>
+            <td align="center" ><%="#{x[2]}"%></td>
+            <td align="center" ><%="#{x[3]}"%></td>
           </tr>
         <%end%>
       </table>
@@ -69,9 +73,7 @@
       <table style="margin-left: 80px; margin-bottom: 50px;width: auto">
         <tr>
           <th style="text-align: center"> NPC ID </th>
-          <th style="text-align: center">Race</th>
           <th style="text-align: center">Alignment</th>
-          <th style="text-align: center">Type</th>
           <th style="text-align: center">Charisma</th>
           <th style="text-align: center">Wisdom</th>
           <th style="text-align: center">Intelligence</th>
@@ -90,8 +92,6 @@
               <td align="center" ><%="#{x[5]}"%></td>
               <td align="center" ><%="#{x[6]}"%></td>
               <td align="center" ><%="#{x[7]}"%></td>
-              <td align="center" ><%="#{x[8]}"%></td>
-              <td align="center" ><%="#{x[9]}"%></td>
             </tr>
         <%end%>
       </table>

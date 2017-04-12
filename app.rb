@@ -64,15 +64,15 @@ get '/player' do
   # only show npcs known to player for the campaign they are in
   if session[:role] == 'Player'
     @results = db.execute("
-    select n.name,c.town, ns.type, ns.race
-    from campaigns c, npcs n, npc_stats ns
-    where c.npc_id = n.npc_id and n.npc_id = ns.npc_id
+    select n.name,c.town, n.type, n.race
+    from campaigns c, npcs n
+    where c.npc_id = n.npc_id
     and c.is_known = 't' and c.cid = ?", cid)
   end
   if session[:role] == 'DM' # show all npcs in campaign DM is in charge of
-    @results = db.execute('select n.name,c.town, ns.type, ns.race
-    from campaigns c, npcs n, npc_stats ns
-    where c.npc_id = n.npc_id and n.npc_id = ns.npc_id
+    @results = db.execute('select n.name,c.town, n.type, n.race
+    from campaigns c, npcs n
+    where c.npc_id = n.npc_id
     and  c.cid = ?', cid)
   end
   db.close
@@ -97,7 +97,7 @@ get '/dataView' do
   @dataArray = db.execute('select username, role from dung_drags
                                where campaign_id = ?', session[:cid])
   # get npc info for campaign DM is in charge of
-  @npcs = db.execute('select n.npc_id, n.name, ns.race, ns.alignment, ns.type,
+  @npcs = db.execute('select n.npc_id, n.name, n.race, ns.alignment, n.type,
   ns.charisma, ns.wisdom, ns. intelligence,
   ns.constitution, ns. dexterity, ns.strength, c.town, c.is_known
   from npcs n, npc_stats ns, campaigns c
@@ -140,11 +140,11 @@ post '/addNPC' do
     newID = db.get_first_value('select max(npc_id) from npcs')
     newID += 1
     # add into npcs table
-    db.execute('insert into npcs values(?,?)', [newID, params[:Name]])
+    db.execute('insert into npcs values(?,?,?,?)', [newID, params[:Name], params[:Race], params[:Type]])
     # add into npc_stats table
-    db.execute('insert into npc_stats values(?,?,?,?,?,?,?,?,?,?)',
-               [newID, params[:Race], params[:Alignment], params[:Type],
-                params[:Charisma], params[:Wisdom], params[:Intelligence],
+    db.execute('insert into npc_stats values(?,?,?,?,?,?,?,?)',
+               [newID, params[:Alignment], params[:Charisma],
+                params[:Wisdom], params[:Intelligence],
                 params[:Constitution], params[:Dexterity], params[:Strength]])
     db.close
   end
@@ -178,21 +178,11 @@ post '/addDM' do
 end
 
 post '/add2Camp' do
-  if params[:npc_id].to_i < 1
-    redirect '/dm'
-  end
   db = SQLite3::Database.new('development.db')
-  test_value = db.get_first_value('select npc_id from campaigns
-                                      where npc_id = ? and cid = ?',
-                                  [params[:npc_id], session[:cid]])
-  if test_value.to_s != params[:npc_id]
   db.execute("
   INSERT INTO campaigns (npc_id, cid, town, is_known)
   VALUES (?, ?, ?, 'false' )",
              [params[:npc_id], session[:cid], params[:town]])
-  db.close
-  redirect '/dm'
-  end
   db.close
   redirect '/dm'
 end
