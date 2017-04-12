@@ -16,3 +16,10 @@
         select.appendChild(el);
     }
 </script>
+
+<!-- Block Spaces in input fields-->
+<script>
+    $("input").on("keydown", function (e) {
+    return e.which !== 32;
+});
+</script>
