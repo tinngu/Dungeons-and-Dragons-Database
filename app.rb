@@ -140,7 +140,7 @@ post '/addNPC' do
     newID = db.get_first_value('select max(npc_id) from npcs')
     newID += 1
     # add into npcs table
-    db.execute('insert into npcs values(?,?,?)', [newID, params[:Name], 'f'])
+    db.execute('insert into npcs values(?,?)', [newID, params[:Name]])
     # add into npc_stats table
     db.execute('insert into npc_stats values(?,?,?,?,?,?,?,?,?,?)',
                [newID, params[:Race], params[:Alignment], params[:Type],
