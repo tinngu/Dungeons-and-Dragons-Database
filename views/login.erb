@@ -10,3 +10,11 @@
 <p style="margin-left: 70px">NOTE: Username and Password are both case-sensitive!</p>
 <a href="/addPlayer" style="margin-left: 70px">Create New Player Account</a><br>
 <a href="/addDM" style="margin-left: 70px">Create New DM Account</a>
+
+
+<!-- Block Spaces in input fields-->
+<script>
+    $("input").on("keydown", function (e) {
+        return e.which !== 32;
+    });
+</script>
