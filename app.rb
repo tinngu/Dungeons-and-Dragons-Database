@@ -34,6 +34,12 @@ get '/search' do
   erb :search
 end
 
+get '/searchResults' do
+  halt(401, 'Not Authorized') unless session[:role] == 'DM'
+  @results = session[:searchResults]
+ erb :searchResults
+end
+
 get '/dm' do
   halt(401, 'Not Authorized') unless session[:role] == 'DM'
   cid = session[:cid]
@@ -220,5 +226,19 @@ post '/makeKnown' do
 end
 
 post '/searchNPC' do
+  results = search_all(params[:Race], params[:Type], params[:Alignment], params[:Stat],
+                   params[:Operator], params[:Value])
+  session[:searchResults] = results
+  redirect to('/searchResults')
+end
 
+def search_all(race, type, alignment, stat, operator, value)
+  db = SQLite3::Database.new('development.db')
+  results = db.execute("select n.npc_id, n.name, n.race, n.type, s.alignment,
+                            s.strength, s.dexterity, s.constitution,
+                            s.intelligence, s.wisdom, s.charisma
+                            from npcs n, npc_stats s where n.race = ? AND
+                            n.type = ? AND s.Alignment = ?
+                            AND n.npc_id = s.npc_id
+                            AND #{stat} #{operator} #{value}", [race, type, alignment])
 end

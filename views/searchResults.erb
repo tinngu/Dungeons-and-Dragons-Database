@@ -1,0 +1,49 @@
+<head>
+  <style>
+    table, td, th {
+      border: 1px solid #1b6d85;
+      text-align: left;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+
+    th, td {
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<h1 style="margin-left: 80px">Search Results</h1>
+<table style="margin-left: 80px">
+  <tr>
+    <th text-align="center"> NPC ID </th>
+    <th text-align="center"> Name </th>
+    <th text-align="center"> Race </th>
+    <th text-align="center"> Type </th>
+    <th text-align="center"> Alignment </th>
+    <th text-align="center"> Strength </th>
+    <th text-align="center"> Dexterity </th>
+    <th text-align="center"> Constitution </th>
+    <th text-align="center"> Intelligence </th>
+    <th text-align="center"> Wisdom </th>
+    <th text-align="center"> Charisma </th>
+  </tr>
+  <% @results.each do |x| %>
+      <tr>
+        <td align="center"><%="#{x[0]}"%></td>
+        <td align="center"><%="#{x[1]}"%></td>
+        <td align="center"><%="#{x[2]}"%></td>
+        <td align="center"><%="#{x[3]}"%></td>
+        <td align="center"><%="#{x[4]}"%></td>
+        <td align="center"><%="#{x[5]}"%></td>
+        <td align="center"><%="#{x[6]}"%></td>
+        <td align="center"><%="#{x[7]}"%></td>
+        <td align="center"><%="#{x[8]}"%></td>
+        <td align="center"><%="#{x[9]}"%></td>
+        <td align="center"><%="#{x[10]}"%></td>
+      </tr>
+  <% end %>
+</table>

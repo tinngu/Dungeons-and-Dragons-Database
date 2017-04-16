@@ -2,7 +2,7 @@
 
 <form action="/searchNPC" method="post" style="margin-left: 80px">
   <label>Race:</label>
-  <select class="form-control" name="Race" style="width: 15%">
+  <select class="form-control" name="Race" style="width: 15%" required>
     <option value="Gnome">Gnome</option>
     <option value="Halfling">Halfling</option>
     <option value="Human">Human</option>
@@ -12,23 +12,23 @@
     <option value="Half-Elf">Half-Elf</option>
     <option value="Tiefling">Tiefling</option>
   </select>
-  <label>Alignment:</label>
-  <select class="form-control" name="Alignment" style="width: 15%">
-    <option value="Neutral">Neutral</option>
-    <option value="Good">Good</option>
-    <option value="Evil">Evil</option>
-  </select>
   <label>Type:</label>
-  <select class="form-control" name="Type" style="width: 15%">
+  <select class="form-control" name="Type" style="width: 15%" required>
     <option value="Merchant">Merchant</option>
     <option value="Fighter">Fighter</option>
     <option value="Commoner">Commoner</option>
     <option value="Mage">Mage</option>
   </select>
+  <label>Alignment:</label>
+  <select class="form-control" name="Alignment" style="width: 15%" required>
+    <option value="Neutral">Neutral</option>
+    <option value="Good">Good</option>
+    <option value="Evil">Evil</option>
+  </select>
   <br>
   <h3>Having:</h3>
   <label>Stat:</label>
-  <select class="form-control" name="Stat" style="width: 15%">
+  <select class="form-control" name="Stat" style="width: 15%" required>
     <option value="Strength">Strength</option>
     <option value="Dexterity">Dexterity</option>
     <option value="Constitution">Constitution</option>
@@ -37,7 +37,7 @@
     <option value="Charisma">Charisma</option>
   </select>
   <label>Comparison Operator:</label>
-  <select class="form-control" name="Operator" style="width: 15%">
+  <select class="form-control" name="Operator" style="width: 15%" required>
     <option value="=">Equals</option>
     <option value="!=">Doesn't Equal</option>
     <option value=">">Greater Than</option>
@@ -46,7 +46,7 @@
     <option value="<=">Less Than Or Equal To</option>
   </select>
   <label>Value:</label>
-  <select class="form-control" name="Value" style="width: 15%">
+  <select class="form-control" name="Value" style="width: 15%" required>
     <option>8</option>
     <option>9</option>
     <option>10</option>
