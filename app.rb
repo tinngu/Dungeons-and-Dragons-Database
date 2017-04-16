@@ -226,9 +226,19 @@ post '/makeKnown' do
 end
 
 post '/searchNPC' do
-  results = search_all(params[:Race], params[:Type], params[:Alignment], params[:Stat],
-                   params[:Operator], params[:Value])
-  session[:searchResults] = results
+  if params[:Race] == 'Any'
+  @results = search_any_race(params[:Type], params[:Alignment],
+                             params[:Stat], params[:Operator], params[:Value])
+  elsif params[:Type] == 'Any'
+    @results = search_any_type(params[:Race], params[:Alignment],
+                               params[:Stat], params[:Operator], params[:Value])
+  elsif params[:Alignment] == 'Any'
+    @results = search_any_alignment(params[:Race], params[:Type],
+                                    params[:Stat], params[:Operator], params[:Value])
+  else @results = search_all(params[:Race], params[:Type], params[:Alignment],
+                             params[:Stat], params[:Operator], params[:Value])
+  end
+  session[:searchResults] = @results
   redirect to('/searchResults')
 end
 
@@ -240,5 +250,51 @@ def search_all(race, type, alignment, stat, operator, value)
                             from npcs n, npc_stats s where n.race = ? AND
                             n.type = ? AND s.Alignment = ?
                             AND n.npc_id = s.npc_id
-                            AND #{stat} #{operator} #{value}", [race, type, alignment])
+                            AND #{stat} #{operator} #{value}",
+                       [race, type, alignment])
 end
+
+def search_any_race(type, alignment, stat, operator, value)
+  db = SQLite3::Database.new('development.db')
+  results = db.execute("select n.npc_id, n.name, n.race, n.type, s.alignment,
+                            s.strength, s.dexterity, s.constitution,
+                            s.intelligence, s.wisdom, s.charisma
+                            from npcs n, npc_stats s where
+                            n.type = ? AND s.Alignment = ?
+                            AND n.npc_id = s.npc_id
+                            AND #{stat} #{operator} #{value}",
+                       [type, alignment])
+end
+
+def search_any_type(race, alignment, stat, operator, value)
+  db = SQLite3::Database.new('development.db')
+  results = db.execute("select n.npc_id, n.name, n.race, n.type, s.alignment,
+                            s.strength, s.dexterity, s.constitution,
+                            s.intelligence, s.wisdom, s.charisma
+                            from npcs n, npc_stats s where n.race = ?
+                            AND s.Alignment = ?
+                            AND n.npc_id = s.npc_id
+                            AND #{stat} #{operator} #{value}",
+                       [race, alignment])
+end
+
+def search_any_alignment(race, type, stat, operator, value)
+  db = SQLite3::Database.new('development.db')
+  results = db.execute("select n.npc_id, n.name, n.race, n.type, s.alignment,
+                            s.strength, s.dexterity, s.constitution,
+                            s.intelligence, s.wisdom, s.charisma
+                            from npcs n, npc_stats s where n.race = ? AND
+                            n.type = ? AND n.npc_id = s.npc_id
+                            AND #{stat} #{operator} #{value}",
+                       [race, type])
+end
+
+def search_by_stats(stat, operator, value)
+  db = SQLite3::Database.new('development.db')
+  results = db.execute("select n.npc_id, n.name, n.race, n.type, s.alignment,
+                            s.strength, s.dexterity, s.constitution,
+                            s.intelligence, s.wisdom, s.charisma
+                            from npcs n, npc_stats s where n.npc_id = s.npc_id
+                            AND #{stat} #{operator} #{value}")
+end
+
