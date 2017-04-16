@@ -1,0 +1,66 @@
+<h1 style="margin-left: 80px">Select the attributes below to find NPCs</h1>
+
+<form action="/searchNPC" method="post" style="margin-left: 80px">
+  <label>Race:</label>
+  <select class="form-control" name="Race" style="width: 15%">
+    <option value="Gnome">Gnome</option>
+    <option value="Halfling">Halfling</option>
+    <option value="Human">Human</option>
+    <option value="Dwarf">Dwarf</option>
+    <option value="Dragonborn">Dragonborn</option>
+    <option value="Elf">Elf</option>
+    <option value="Half-Elf">Half-Elf</option>
+    <option value="Tiefling">Tiefling</option>
+  </select>
+  <label>Alignment:</label>
+  <select class="form-control" name="Alignment" style="width: 15%">
+    <option value="Neutral">Neutral</option>
+    <option value="Good">Good</option>
+    <option value="Evil">Evil</option>
+  </select>
+  <label>Type:</label>
+  <select class="form-control" name="Type" style="width: 15%">
+    <option value="Merchant">Merchant</option>
+    <option value="Fighter">Fighter</option>
+    <option value="Commoner">Commoner</option>
+    <option value="Mage">Mage</option>
+  </select>
+  <br>
+  <h3>Having:</h3>
+  <label>Stat:</label>
+  <select class="form-control" name="Stat" style="width: 15%">
+    <option value="Strength">Strength</option>
+    <option value="Dexterity">Dexterity</option>
+    <option value="Constitution">Constitution</option>
+    <option value="Intelligence">Intelligence</option>
+    <option value="Wisdom">Wisdom</option>
+    <option value="Charisma">Charisma</option>
+  </select>
+  <label>Comparison Operator:</label>
+  <select class="form-control" name="Operator" style="width: 15%">
+    <option value="=">Equals</option>
+    <option value="!=">Doesn't Equal</option>
+    <option value=">">Greater Than</option>
+    <option value=">=">Greater Than or Equal To</option>
+    <option value="<">Less Than</option>
+    <option value="<=">Less Than Or Equal To</option>
+  </select>
+  <label>Value:</label>
+  <select class="form-control" name="Value" style="width: 15%">
+    <option>8</option>
+    <option>9</option>
+    <option>10</option>
+    <option>11</option>
+    <option>12</option>
+    <option>13</option>
+    <option>14</option>
+    <option>15</option>
+    <option>16</option>
+    <option>17</option>
+    <option>18</option>
+    <option>19</option>
+    <option>20</option>
+  </select>
+  <br>
+  <button type="submit" class="btn btn-default">Search</button>
+</form>

@@ -29,6 +29,11 @@ get '/logout' do
   redirect to ('/')
 end
 
+get '/search' do
+  halt(401, 'Not Authorized') unless session[:role] == 'DM'
+  erb :search
+end
+
 get '/dm' do
   halt(401, 'Not Authorized') unless session[:role] == 'DM'
   cid = session[:cid]
@@ -214,3 +219,6 @@ post '/makeKnown' do
   redirect '/dm'
 end
 
+post '/searchNPC' do
+
+end
