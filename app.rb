@@ -226,15 +226,26 @@ post '/makeKnown' do
 end
 
 post '/searchNPC' do
-  if params[:Race] == 'Any'
+  if params[:Race] == 'Any' && params[:Type] == 'Any' && params[:Alignment] == 'Any'
+  @results = search_by_stats(params[:Stat], params[:Operator], params[:Value])
+  elsif params[:Race] == 'Any' && params[:Alignment] != 'Any' && params[:Type] != 'Any'
   @results = search_any_race(params[:Type], params[:Alignment],
                              params[:Stat], params[:Operator], params[:Value])
-  elsif params[:Type] == 'Any'
+  elsif params[:Type] == 'Any' && params[:Race] != 'Any' && params[:Type] != 'Any'
     @results = search_any_type(params[:Race], params[:Alignment],
                                params[:Stat], params[:Operator], params[:Value])
-  elsif params[:Alignment] == 'Any'
+  elsif params[:Alignment] == 'Any' && params[:Race] != 'Any' && params[:Type] != 'Any'
     @results = search_any_alignment(params[:Race], params[:Type],
                                     params[:Stat], params[:Operator], params[:Value])
+  elsif params[:Race] == 'Any' && params[:Type] == 'Any' && params[:Alignment] !='Any'
+    @results = search_any_race_type(params[:Alignment], params[:Stat],
+                                    params[:Operator], params[:Value])
+  elsif params[:Race] == 'Any' && params[:Alignment] == 'Any' && params[:Type] != 'Any'
+    @results = search_any_race_alignment(params[:Type], params[:Stat],
+                                         params[:Operator], params[:Value])
+  elsif params[:Type] == 'Any' && params[:Alignment] == 'Any' && params[:Race] != 'Any'
+    @results = search_any_type_alignment(params[:Race], params[:Stat],
+                                         params[:Operator], params[:Value])
   else @results = search_all(params[:Race], params[:Type], params[:Alignment],
                              params[:Stat], params[:Operator], params[:Value])
   end
@@ -298,3 +309,35 @@ def search_by_stats(stat, operator, value)
                             AND #{stat} #{operator} #{value}")
 end
 
+def search_any_race_type(alignment, stat, operator, value)
+  db = SQLite3::Database.new('development.db')
+  results = db.execute("select n.npc_id, n.name, n.race, n.type, s.alignment,
+                            s.strength, s.dexterity, s.constitution,
+                            s.intelligence, s.wisdom, s.charisma
+                            from npcs n, npc_stats s where
+                            s.Alignment = ? AND n.npc_id = s.npc_id
+                            AND #{stat} #{operator} #{value}",
+                       [alignment])
+end
+
+def search_any_race_alignment(type, stat, operator, value)
+  db = SQLite3::Database.new('development.db')
+  results = db.execute("select n.npc_id, n.name, n.race, n.type, s.alignment,
+                            s.strength, s.dexterity, s.constitution,
+                            s.intelligence, s.wisdom, s.charisma
+                            from npcs n, npc_stats s where
+                            n.type = ? AND n.npc_id = s.npc_id
+                            AND #{stat} #{operator} #{value}",
+                       [type])
+end
+
+def search_any_type_alignment(race, stat, operator, value)
+  db = SQLite3::Database.new('development.db')
+  results = db.execute("select n.npc_id, n.name, n.race, n.type, s.alignment,
+                            s.strength, s.dexterity, s.constitution,
+                            s.intelligence, s.wisdom, s.charisma
+                            from npcs n, npc_stats s where n.race = ?
+                            AND n.npc_id = s.npc_id
+                            AND #{stat} #{operator} #{value}",
+                       [race])
+end
