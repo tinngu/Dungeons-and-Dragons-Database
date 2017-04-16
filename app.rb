@@ -36,7 +36,31 @@ end
 
 get '/searchResults' do
   halt(401, 'Not Authorized') unless session[:role] == 'DM'
-  @results = session[:searchResults]
+  db = SQLite3::Database.new('development.db')
+  if params[:Race] == 'Any' && params[:Type] == 'Any' && params[:Alignment] == 'Any'
+    @results = search_by_stats(params[:Stat], params[:Operator], params[:Value])
+  elsif params[:Race] == 'Any' && params[:Alignment] != 'Any' && params[:Type] != 'Any'
+    @results = search_any_race(params[:Type], params[:Alignment],
+                               params[:Stat], params[:Operator], params[:Value])
+  elsif params[:Type] == 'Any' && params[:Race] != 'Any' && params[:Type] != 'Any'
+    @results = search_any_type(params[:Race], params[:Alignment],
+                               params[:Stat], params[:Operator], params[:Value])
+  elsif params[:Alignment] == 'Any' && params[:Race] != 'Any' && params[:Type] != 'Any'
+    @results = search_any_alignment(params[:Race], params[:Type],
+                                    params[:Stat], params[:Operator], params[:Value])
+  elsif params[:Race] == 'Any' && params[:Type] == 'Any' && params[:Alignment] !='Any'
+    @results = search_any_race_type(params[:Alignment], params[:Stat],
+                                    params[:Operator], params[:Value])
+  elsif params[:Race] == 'Any' && params[:Alignment] == 'Any' && params[:Type] != 'Any'
+    @results = search_any_race_alignment(params[:Type], params[:Stat],
+                                         params[:Operator], params[:Value])
+  elsif params[:Type] == 'Any' && params[:Alignment] == 'Any' && params[:Race] != 'Any'
+    @results = search_any_type_alignment(params[:Race], params[:Stat],
+                                         params[:Operator], params[:Value])
+  else @results = search_all(params[:Race], params[:Type], params[:Alignment],
+                             params[:Stat], params[:Operator], params[:Value])
+  end
+  session[:searchResults] = @results
  erb :searchResults
 end
 
@@ -226,31 +250,8 @@ post '/makeKnown' do
 end
 
 post '/searchNPC' do
-  if params[:Race] == 'Any' && params[:Type] == 'Any' && params[:Alignment] == 'Any'
-  @results = search_by_stats(params[:Stat], params[:Operator], params[:Value])
-  elsif params[:Race] == 'Any' && params[:Alignment] != 'Any' && params[:Type] != 'Any'
-  @results = search_any_race(params[:Type], params[:Alignment],
-                             params[:Stat], params[:Operator], params[:Value])
-  elsif params[:Type] == 'Any' && params[:Race] != 'Any' && params[:Type] != 'Any'
-    @results = search_any_type(params[:Race], params[:Alignment],
-                               params[:Stat], params[:Operator], params[:Value])
-  elsif params[:Alignment] == 'Any' && params[:Race] != 'Any' && params[:Type] != 'Any'
-    @results = search_any_alignment(params[:Race], params[:Type],
-                                    params[:Stat], params[:Operator], params[:Value])
-  elsif params[:Race] == 'Any' && params[:Type] == 'Any' && params[:Alignment] !='Any'
-    @results = search_any_race_type(params[:Alignment], params[:Stat],
-                                    params[:Operator], params[:Value])
-  elsif params[:Race] == 'Any' && params[:Alignment] == 'Any' && params[:Type] != 'Any'
-    @results = search_any_race_alignment(params[:Type], params[:Stat],
-                                         params[:Operator], params[:Value])
-  elsif params[:Type] == 'Any' && params[:Alignment] == 'Any' && params[:Race] != 'Any'
-    @results = search_any_type_alignment(params[:Race], params[:Stat],
-                                         params[:Operator], params[:Value])
-  else @results = search_all(params[:Race], params[:Type], params[:Alignment],
-                             params[:Stat], params[:Operator], params[:Value])
-  end
-  session[:searchResults] = @results
-  redirect to('/searchResults')
+  query = params.map { |key, value| "#{key}=#{value}" }.join("&")
+  redirect to("/searchResults?#{query}")
 end
 
 def search_all(race, type, alignment, stat, operator, value)
