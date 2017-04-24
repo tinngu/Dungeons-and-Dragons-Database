@@ -7,7 +7,7 @@ configure do
   DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/development.db")
 end
 
-class DungDrags
+class Users
   include DataMapper::Resource
   property :username, String, key: true
   property :role, String
