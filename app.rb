@@ -82,7 +82,7 @@ end
 
 get '/addPlayer' do
   db = SQLite3::Database.new('development.db')
-  @cids = db.execute("select campaign_id from dung_drags where role = 'DM'")
+  @cids = db.execute("select campaign_id from users where role = 'DM'")
   @cids = @cids.flatten
   erb :addPlayer
 end
@@ -95,7 +95,7 @@ end
 get '/successPage' do
   db = SQLite3::Database.new('development.db')
   @results = db.execute('select role, username, campaign_id
-                             from dung_drags order by rowid desc limit 1')
+                             from users order by rowid desc limit 1')
   db.close
   erb :successPage
 end
@@ -137,7 +137,7 @@ get '/dataView' do
   halt(401, 'Not Authorized') unless session[:role] == 'DM'
   db = SQLite3::Database.new('development.db')
   # get player/dm info
-  @dataArray = db.execute('select username, role from dung_drags
+  @dataArray = db.execute('select username, role from users
                                where campaign_id = ?', session[:cid])
   # get npc info for campaign DM is in charge of
   @npcs = db.execute('select n.npc_id, n.name, n.race, ns.alignment, n.type,
@@ -151,7 +151,7 @@ get '/dataView' do
 end
 
 post '/login' do
-  user = DungDrags.get(params[:username])
+  user = Users.get(params[:username])
   if user.nil?
     redirect '/login'
   else
@@ -199,7 +199,7 @@ post '/addPlayer' do
   begin
     # insert new player into database
     db = SQLite3::Database.new('development.db')
-    db.execute("insert into dung_drags values(?,?,'Player',?)",
+    db.execute("insert into users values(?,?,'Player',?)",
                [params[:USERNAME], params[:PASSWORD], params[:CID]])
     db.close
   end
@@ -210,11 +210,11 @@ post '/addDM' do
   begin
     # automatically assign a new campaign ID to DM by incrementing largest campaign_id by 1
     db = SQLite3::Database.new('development.db')
-    newCID = db.get_first_value("select max(campaign_id) from dung_drags
+    newCID = db.get_first_value("select max(campaign_id) from users
                                      where role = 'DM'")
     newCID += 1
     # insert new DM into database
-    db.execute("insert into dung_drags values(?,?,'DM',?)",
+    db.execute("insert into users values(?,?,'DM',?)",
                [params[:USERNAME], params[:PASSWORD], newCID])
     db.close
   end
